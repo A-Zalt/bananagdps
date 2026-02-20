@@ -6,6 +6,8 @@
 #include <vector>
 #include <sstream>
 
+#define AMOUNT_OF_SONGS 34
+
 template <typename T>
 std::string to_string(T value)
 {
@@ -130,7 +132,7 @@ const char* LevelTools_getAudioFileName(int id) {
     }
 }
 int LevelTools_artistForAudio(int id) {
-    int aToS[34] = {
+    int aToS[AMOUNT_OF_SONGS] = {
         Artist::ForeverBound, Artist::DJVI, Artist::Step, Artist::DJVI, Artist::DJVI, Artist::DJVI, Artist::Waterflame, Artist::Waterflame, 
         Artist::DJVI, Artist::DJVI, Artist::Waterflame, Artist::DJNate, Artist::DJVI, Artist::Waterflame, Artist::DJNate, Artist::DJNate, 
         Artist::Waterflame, Artist::Waterflame, Artist::DJNate, Artist::TMM43, Artist::F777, Artist::LapFoxTrax, Artist::TheFatRat,
@@ -138,7 +140,7 @@ int LevelTools_artistForAudio(int id) {
         Artist::Lchavasse, Artist::cYsmix, Artist::cYsmix, Artist::Rukkus
     };
     if (id == -1) return Artist::OcularNebula;
-    if (id > 33) return Artist::DJVI;
+    if (id >= AMOUNT_OF_SONGS) return Artist::DJVI;
     return aToS[id];
 }
 
@@ -390,20 +392,20 @@ void extension_init() {
 
     DobbyCodePatch(
         reinterpret_cast<void*>(get_address(0x166df6)),
-        std::vector<uint8_t>({0x22}).data(), 1
+        std::vector<uint8_t>({AMOUNT_OF_SONGS}).data(), 1
     ); // add extra songs to SongInfoLayer
 
     // extend editor song selection
     DobbyCodePatch(
         reinterpret_cast<void*>(get_address(0x14586c)),
-        std::vector<uint8_t>({0x21}).data(), 1
+        std::vector<uint8_t>({AMOUNT_OF_SONGS - 1}).data(), 1
     );
     DobbyCodePatch(
         reinterpret_cast<void*>(get_address(0x145820)),
-        std::vector<uint8_t>({0x21}).data(), 1
+        std::vector<uint8_t>({AMOUNT_OF_SONGS - 1}).data(), 1
     );
     DobbyCodePatch(
         reinterpret_cast<void*>(get_address(0x145824)),
-        std::vector<uint8_t>({0x21}).data(), 1
+        std::vector<uint8_t>({AMOUNT_OF_SONGS - 1}).data(), 1
     );
 }
